@@ -9,14 +9,16 @@ pip install -U passlib pypiserver[cache]==1.2.5 && \
 mkdir -p /data/packages && \
 mkdir -p /data/logs && \
 mkdir -p /data/conf && \
+touch /data/logs/pypi.log && \
+touch /data/conf/log.conf && \
 chown -R pypiserver:pypiserver /data/packages && \
+chown -R pypiserver:pypiserver /data/logs && \
+chown -R pypiserver:pypiserver /data/conf && \
 # Set the setgid bit so anything added here gets associated with the
 # pypiserver group
 chmod g+s /data/packages
 
-VOLUME /data/packages
-VOLUME /data/logs
-VOLUME /data/conf
+VOLUME ["/data/packages", "/data/logs", "/data/conf"]
 USER pypiserver
 WORKDIR /data
 EXPOSE 8080
