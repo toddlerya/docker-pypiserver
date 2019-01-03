@@ -1,0 +1,10 @@
+version: '3'
+services:
+  pypi:
+    image: evi1/pypiserver:1.2.5
+    volumes:
+      - /home/evi1/pypi:/data/packages
+      # - /home/evi1/pypi/.htpasswd:/data/.htpasswd
+    container_name: pypi
+    ports:
+      - 8888:8080
