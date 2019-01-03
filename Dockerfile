@@ -7,18 +7,19 @@ apk add py-bcrypt curl && \
 pip install --upgrade pip && \
 pip install -U passlib pypiserver[cache]==1.2.5 && \
 mkdir -p /data/packages && \
+mkdir -p /data/logs && \
+mkdir -p /data/conf && \
 chown -R pypiserver:pypiserver /data/packages && \
 # Set the setgid bit so anything added here gets associated with the
 # pypiserver group
 chmod g+s /data/packages
 
 VOLUME /data/packages
+VOLUME /data/logs
+VOLUME /data/conf
 USER pypiserver
 WORKDIR /data
 EXPOSE 8080
 
-# ENTRYPOINT ["pypi-server", "-p", "8080"]
-# CMD ["packages"]
-
-ADD entrypoint.sh /
-CMD ["/entrypoint.sh"]
+ENTRYPOINT ["pypi-server", "-p", "8080"]
+CMD ["packages"]

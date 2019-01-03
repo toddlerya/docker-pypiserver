@@ -3,8 +3,16 @@ services:
   pypi:
     image: evi1/pypiserver:1.2.5
     volumes:
-      - /home/evi1/pypi:/data/packages
+      - /home/evi1/pypi/packages:/data/packages
+      - /home/evi1/pypi/logs/pypi.log:/data/logs/pypi.log
       # - /home/evi1/pypi/.htpasswd:/data/.htpasswd
     container_name: pypi
     ports:
       - 8888:8080
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://127.0.0.1:8080 || exit 1"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+    # command: -P /data/.htpasswd -a update,download,list /data/packages
+    command: -P . -a . /data/packages --log-file /data/logs/pypi.log --log-req-frmt '%s' --log-res-frmt '%s'  --log-err-frmt '%s'
