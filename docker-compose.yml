@@ -16,5 +16,6 @@ services:
       timeout: 10s
       retries: 3
     # command: -P /data/.htpasswd -a update,download,list /data/packages
-    # command: -v --log-file /data/logs/pypiserver.log --log-req-frmt '%s' --log-res-frmt '%s'  --log-err-frmt '%s' -P . -a . /data/packages 
-    command: -v /data/packages 
+    # command: -v --log-file=/data/pypiserver.log --log-req-frmt '%s' --log-res-frmt '%s'  --log-err-frmt '%s' -P . -a . /data/packages 
+    command: -v --log-file=/data/logs/pypiserver.log -P . -a . /data/packages 
+    # command: -v /data/packages 

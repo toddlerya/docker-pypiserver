@@ -9,8 +9,8 @@ pip install -U passlib pypiserver[cache]==1.2.5 && \
 mkdir -p /data/packages && \
 mkdir -p /data/logs && \
 mkdir -p /data/conf && \
-touch /data/logs/pypiserver.log && \
-touch /data/conf/log.conf && \
+# touch /data/logs/pypiserver.log && \
+# touch /data/conf/log.conf && \
 chown -R pypiserver:pypiserver /data/packages && \
 chown -R pypiserver:pypiserver /data/logs && \
 chown -R pypiserver:pypiserver /data/conf && \
@@ -21,7 +21,8 @@ chmod g+s /data/logs && \
 chmod g+s /data/conf
 
 VOLUME ["/data/packages", "/data/logs", "/data/conf"]
-USER pypiserver
+# USER pypiserver
+USER root
 WORKDIR /data
 EXPOSE 8080
 
