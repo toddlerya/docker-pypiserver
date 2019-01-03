@@ -4,7 +4,8 @@ services:
     image: evi1/pypiserver:1.2.5
     volumes:
       - /home/evi1/pypi/packages:/data/packages
-      - /home/evi1/pypi/logs/pypi.log:/data/logs/pypi.log
+      - /home/evi1/pypi/logs:/data/logs
+      - /home/evi1/pypi/conf:/data/conf
       # - /home/evi1/pypi/.htpasswd:/data/.htpasswd
     container_name: pypi
     ports:
@@ -15,4 +16,5 @@ services:
       timeout: 10s
       retries: 3
     # command: -P /data/.htpasswd -a update,download,list /data/packages
-    command: -v --log-file /data/logs/pypi.log --log-req-frmt '%s' --log-res-frmt '%s'  --log-err-frmt '%s' -P . -a . /data/packages 
+    # command: -v --log-file /data/logs/pypiserver.log --log-req-frmt '%s' --log-res-frmt '%s'  --log-err-frmt '%s' -P . -a . /data/packages 
+    command: -v /data/packages 
