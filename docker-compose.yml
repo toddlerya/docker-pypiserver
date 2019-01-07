@@ -1,21 +1,48 @@
 version: '3'
 services:
-  pypi:
-    image: evi1/pypiserver:1.2.5
+  nginx:
+    container_name: pypi_nginx
+    image: nginx:1.15.2-alpine
+    networks:
+      pypi_net:
+        ipv4_address: 172.21.0.2
+    ports: 
+      - "8898:80"
+    restart: always
     volumes:
-      - /home/evi1/pypi/packages:/data/packages
-      - /home/evi1/pypi/logs:/data/logs
-      - /home/evi1/pypi/conf:/data/conf
-      # - /home/evi1/pypi/.htpasswd:/data/.htpasswd
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./nginx/nginx.conf:/etc/nginx/nginx.conf"
+      - "./nginx/conf:/etc/nginx/conf.d"
+      - "./nginx/logs:/var/log/nginx"
+  pypi:
     container_name: pypi
+    image: evi1/pypiserver:1.2.5
+    networks:
+      pypi_net:
+        ipv4_address: 172.21.0.3
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - ./pypi_data/packages:/data/packages
+      - ./pypi_data/logs:/data/logs
+      - ./pypi_data/conf:/data/conf
+      # - /home/evi1/pypi/.htpasswd:/data/.htpasswd
     ports:
-      - 8888:8080
+      - 8899:8080
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://127.0.0.1:8080 || exit 1"]
-      interval: 30m
+      interval: 60m
       timeout: 10s
       retries: 3
     # command: -P /data/.htpasswd -a update,download,list /data/packages
     # command: -v --log-file=/data/pypiserver.log --log-req-frmt '%s' --log-res-frmt '%s'  --log-err-frmt '%s' -P . -a . /data/packages 
     command: -v --log-file=/data/logs/pypiserver.log -P . -a . /data/packages 
-    # command: -v /data/packages 
+    # command: -v /data/packages
+networks:
+  pypi_net:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.21.0.0/16
