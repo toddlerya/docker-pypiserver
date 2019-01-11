@@ -1,0 +1,3 @@
+nginx/logs/*
+pypi_data/logs/*
+pypi_data/packages/*
