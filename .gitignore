@@ -1,3 +1,7 @@
 nginx/logs/*.log
 pypi_data/logs/*.log
-pypi_data/packages/*
+pypi_data/packages/*.zip
+pypi_data/packages/*.tar.gz
+pypi_data/packages/*.whl
+pypi_data/packages/*.egg
+pypi_data/packages/*.tar
