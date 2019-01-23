@@ -10,10 +10,11 @@ services:
       - "8898:80"
     restart: always
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
-      - "./nginx/nginx.conf:/etc/nginx/nginx.conf"
-      - "./nginx/conf:/etc/nginx/conf.d"
-      - "./nginx/logs:/var/log/nginx"
+      - /etc/localtime:/etc/localtime:ro
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf:/etc/nginx/conf.d
+      - ./nginx/logs:/var/log/nginx
+      - ./pypi_data/packages:/data/packages
   pypi:
     container_name: pypi
     image: evi1/pypiserver:1.2.5
@@ -21,7 +22,7 @@ services:
       pypi_net:
         ipv4_address: 172.21.0.3
     volumes:
-      - "/etc/localtime:/etc/localtime:ro"
+      - /etc/localtime:/etc/localtime:ro
       - ./pypi_data/packages:/data/packages
       - ./pypi_data/logs:/data/logs
       - ./pypi_data/conf:/data/conf
